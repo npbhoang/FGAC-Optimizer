@@ -1,0 +1,42 @@
+[
+	{
+		"roles": [
+			"Lecturer"
+		],
+		"actions": [
+			"read"
+		],
+		"resources": [
+			{
+				"entity": "Student",
+				"attribute": "age"
+			}
+		],
+		"auth": [
+			{
+				"ocl": "kcaller.students->includes(kself)",
+				"sql": "TBC"
+			}
+		]
+	},
+	{
+		"roles": [
+			"Lecturer"
+		],
+		"actions": [
+			"read"
+		],
+		"resources": [
+			{
+				"association": "Enrollment"
+			}
+		],
+		"auth": [
+			{
+				"ocl": "kstudents.lecturers->includes(kcaller)",
+				"sql": "TBC"
+			}
+		]
+	}
+] 
+
