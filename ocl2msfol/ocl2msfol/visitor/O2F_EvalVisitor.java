@@ -186,7 +186,8 @@ public class O2F_EvalVisitor extends OCL2MSFOLVisitor {
             Expression exp = associationClassCallExp.getNavigationSource();
             exp.accept(evalVisitor);
             this.setFOLFormulae(String.format(template, association,
-                    "%s"));
+                    associationClassCallExp.getReferredAssociationEndType(),
+                    associationClassCallExp.getOppositeAssociationEndType()));
         }
     }
 

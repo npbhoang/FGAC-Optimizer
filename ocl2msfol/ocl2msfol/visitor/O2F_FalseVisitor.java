@@ -131,6 +131,44 @@ public class O2F_FalseVisitor extends OCL2MSFOLVisitor {
                 firstArgument, secondArgument, thirdArgument));
             break;
         case includes:
+        	template = Template.False.includes;
+			// TODO: Investigate what is the meaning of this?
+			// This can be duplicated. Temporary put it as i.
+			type = "Classifier";
+
+			sourceExp = (OclExp) iteratorExp.getSource();
+
+			Variable temp = new Variable("temp", sourceExp.getType().getElementType());
+
+			fVarsSrc = VariableUtils.FVars(sourceExp);
+//			fVarsSrc = VariableUtils.getComplement(adhocContextualSet.stream().collect(Collectors.toList()), fVarsSrc);
+			evalVisitor = new O2F_EvalVisitor(dm, adhocContextualSet, defC);
+			sourceExp.accept(evalVisitor);
+
+			if (iteratorExp.getSource() instanceof AssociationClassCallExp) {
+				firstArgument = special_app(evalVisitor.getFOLFormulae(), fVarsSrc, temp);
+			} else {
+				firstArgument = app(evalVisitor.getFOLFormulae(), fVarsSrc, temp.getName());
+			}
+
+			bodyExp = iteratorExp.getBody();
+			fVarsSrc = VariableUtils.FVars(bodyExp);
+			evalVisitor = new O2F_EvalVisitor(dm, adhocContextualSet, defC);
+			bodyExp.accept(evalVisitor);
+			String secondArgumentTemplate = "(not (= %s %s))";
+			String secondsecondArgument = app(evalVisitor.getFOLFormulae(), fVarsSrc, null);
+			secondArgument = String.format(secondArgumentTemplate, temp.getName(), secondsecondArgument);
+
+			invalVisitor = new O2F_InvalidVisitor(dm, adhocContextualSet, defC);
+			sourceExp.accept(invalVisitor);
+			thirdArgument = invalVisitor.getFOLFormulae();
+
+			invalVisitor = new O2F_InvalidVisitor(dm, adhocContextualSet, defC);
+			bodyExp.accept(invalVisitor);
+			String forthArgument = invalVisitor.getFOLFormulae();
+
+			this.setFOLFormulae(String.format(template, temp.getName(), type, firstArgument, secondArgument,
+					thirdArgument, forthArgument));
             break;
         case includesAll:
             break;
@@ -201,7 +239,18 @@ public class O2F_FalseVisitor extends OCL2MSFOLVisitor {
         }
     }
 
-    @Override
+    private String special_app(String folFormulae, List<Variable> fVarsSrc, Variable var) {
+    	if (fVarsSrc.size() != 1) {
+			System.out.println("There is an exception here O2F_True (243) !");
+			return null;
+		} else {
+			Variable one = fVarsSrc.get(0);
+			return folFormulae.replace(one.getType().getReferredType(), one.getName())
+					.replace(var.getType().getReferredType(), var.getName());
+		}
+	}
+
+	@Override
     public void visit(OperationCallExp operationCallExp) {
         switch (operationCallExp.getReferredOperation().getName()) {
         case "allInstances":

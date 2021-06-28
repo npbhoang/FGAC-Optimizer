@@ -53,6 +53,7 @@ public class Template {
 		public static String notEmpty = "(forall ((%s %s))(and (not %s) (not %s)))";
 		public static String forAll = "(exists ((%s %s))(and (and %s %s) (not %s)))";
 		public static String exists = "(forall ((%s %s))(and (=> %s %s) (not %s)))";
+		public static String includes = "(forall ((%s %s))(and (=> %s %s) (not %s) (not %s)))";
 	}
 
 	public static class Null {
@@ -112,7 +113,7 @@ public class Template {
 		public static String allInstances = "(%s %s)";
 		public static String attribute = "(%1$s_%3$s %2$s)";
 		public static String association_0_1_arity = "(%1$s_%3$s %2$s)";
-		public static String association_n_arity = "(%s %s)";
+		public static String association_n_arity = "(%s %s %s)";
 	}
 
 	public static class Def {

@@ -1,4 +1,5 @@
 package ocl2msfol.visitor;
+
 /**************************************************************************
 Copyright 2020 ngpbh
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +16,6 @@ limitations under the License.
 
 @author: ngpbh
 ***************************************************************************/
-
 
 import java.util.List;
 import java.util.Map;
@@ -133,17 +133,24 @@ public class O2F_TrueVisitor extends OCL2MSFOLVisitor {
 			break;
 		case includes:
 			template = Template.True.includes;
-			// TODO: Investigate what is the meaning of this? 
+			// TODO: Investigate what is the meaning of this?
 			// This can be duplicated. Temporary put it as i.
-			var = "i";
 			type = "Classifier";
 
 			sourceExp = (OclExp) iteratorExp.getSource();
+
+			Variable temp = new Variable("temp", sourceExp.getType().getElementType());
+
 			fVarsSrc = VariableUtils.FVars(sourceExp);
 //			fVarsSrc = VariableUtils.getComplement(adhocContextualSet.stream().collect(Collectors.toList()), fVarsSrc);
 			evalVisitor = new O2F_EvalVisitor(dm, adhocContextualSet, defC);
 			sourceExp.accept(evalVisitor);
-			firstArgument = app(evalVisitor.getFOLFormulae(), fVarsSrc, var);
+
+			if (iteratorExp.getSource() instanceof AssociationClassCallExp) {
+				firstArgument = special_app(evalVisitor.getFOLFormulae(), fVarsSrc, temp);
+			} else {
+				firstArgument = app(evalVisitor.getFOLFormulae(), fVarsSrc, temp.getName());
+			}
 
 			bodyExp = iteratorExp.getBody();
 			fVarsSrc = VariableUtils.FVars(bodyExp);
@@ -151,7 +158,7 @@ public class O2F_TrueVisitor extends OCL2MSFOLVisitor {
 			bodyExp.accept(evalVisitor);
 			String secondArgumentTemplate = "(= %s %s)";
 			String secondsecondArgument = app(evalVisitor.getFOLFormulae(), fVarsSrc, null);
-			secondArgument = String.format(secondArgumentTemplate, var, secondsecondArgument);
+			secondArgument = String.format(secondArgumentTemplate, temp.getName(), secondsecondArgument);
 
 			invalVisitor = new O2F_InvalidVisitor(dm, adhocContextualSet, defC);
 			sourceExp.accept(invalVisitor);
@@ -161,8 +168,8 @@ public class O2F_TrueVisitor extends OCL2MSFOLVisitor {
 			bodyExp.accept(invalVisitor);
 			forthArgument = invalVisitor.getFOLFormulae();
 
-			this.setFOLFormulae(
-					String.format(template, var, type, firstArgument, secondArgument, thirdArgument, forthArgument));
+			this.setFOLFormulae(String.format(template, temp.getName(), type, firstArgument, secondArgument,
+					thirdArgument, forthArgument));
 			break;
 		case includesAll:
 			break;
@@ -228,6 +235,17 @@ public class O2F_TrueVisitor extends OCL2MSFOLVisitor {
 			break;
 		default:
 			break;
+		}
+	}
+
+	private String special_app(String folFormulae, List<Variable> fVarsSrc, Variable var) {
+		if (fVarsSrc.size() != 1) {
+			System.out.println("There is an exception here O2F_True (243) !");
+			return null;
+		} else {
+			Variable one = fVarsSrc.get(0);
+			return folFormulae.replace(one.getType().getReferredType(), one.getName())
+					.replace(var.getType().getReferredType(), var.getName());
 		}
 	}
 

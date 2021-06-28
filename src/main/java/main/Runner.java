@@ -13,6 +13,7 @@ import dmparser.models.DataModel;
 import dmparser.models.Entity;
 import dmparser.models.Pair;
 import dmparser.utils.DmUtils;
+import ocl2msfol.visitor.LogicValue;
 import oclparser.expressions.OclExp;
 import oclparser.expressions.Operation;
 import oclparser.expressions.OperationCallExp;
@@ -61,7 +62,7 @@ public class Runner {
 		final static String associationToRead = "Enrollment";
 		
 		// checkAuthroized negate the authorization constraints
-		final static boolean checkAuthroized = false;
+		final static boolean checkAuthroized = true;
 			
 	}
 
@@ -96,6 +97,7 @@ public class Runner {
 		for (String prop : Context.properties) {
 			OclExp exp = (OclExp) oclParser.parse(prop, dataModel);
 			OCL2MSFOL.setExpression(exp);
+			OCL2MSFOL.setLvalue(LogicValue.TRUE);
 			formulas.addAll(OCL2MSFOL.map2msfol());
 		}
 		// sAuth is the final authorization constraint that need to be checked.
@@ -123,6 +125,7 @@ public class Runner {
 		}
 		// Generate its FOL formula
 		OCL2MSFOL.setExpression(oclAuth);
+		OCL2MSFOL.setLvalue(LogicValue.TRUE);
 		formulas.addAll(OCL2MSFOL.map2msfol());
 		// Adding (check-sat) and (get-models)
 		formulas.add("(check-sat)");
