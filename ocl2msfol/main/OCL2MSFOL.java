@@ -66,7 +66,7 @@ public class OCL2MSFOL {
 		dm = dm_;
 	}
 
-	public static List<String> map2msfol() throws IOException {
+	public static List<String> map2msfol(boolean negation) throws IOException {
 		OCL2MSFOLVisitor visitor;
 
 		List<String> formulas = new ArrayList<>();
@@ -90,12 +90,17 @@ public class OCL2MSFOL {
 
 		for (DefC d : defC.values()) {
 			formulas.add(String.format("(declare-fun %s)", d.getNameDefinition()));
-			formulas.add(d.getAssertion());
+			formulas.add(String.format("(assert %s)", d.getAssertion()));
 		}
 
 //		formulas.add(visitor.getFOLFormulae());
 		//TODO: Temporary change
-		formulas.add(String.format("(assert %s)", visitor.getFOLFormulae()));
+		if (negation) {
+			formulas.add(String.format("(assert (not %s))", visitor.getFOLFormulae()));
+		} else {
+			formulas.add(String.format("(assert %s)", visitor.getFOLFormulae()));
+		}
+		
 		return formulas;
 	}
 

@@ -15,8 +15,6 @@ import dmparser.models.Pair;
 import dmparser.utils.DmUtils;
 import ocl2msfol.visitor.LogicValue;
 import oclparser.expressions.OclExp;
-import oclparser.expressions.Operation;
-import oclparser.expressions.OperationCallExp;
 import oclparser.expressions.Variable;
 import oclparser.simple.OCLParser;
 import oclparser.types.Type;
@@ -33,33 +31,37 @@ public class Runner {
 		
 		// List of data invariants
 		final static List<String> invariants = Arrays.asList(
-				"Lecturer.allInstances()->forAll(l|Student.allInstances()->forAll(s|l.students->includes(s)))"
+//				"Lecturer.allInstances()->forAll(l|Student.allInstances()->forAll(s|l.students->includes(s)))"
 				);
 		
 		// Security Model
-		final static String securityModelFilePath = "src\\main\\resources\\secVGU#3.json";
+//		final static String securityModelFilePath = "src\\main\\resources\\secVGU#3.json";
+		final static String securityModelFilePath = "src\\main\\resources\\secVGU#2.json";
 		
 		// Security variables: self, caller, association-ends
 		// For now, please add "k" as a prefix of these variables.
 		final static List<Pair<String, String>> securityVariables = Arrays
 				.asList(new Pair<String, String>("kcaller", "Lecturer"), 
-						new Pair<String, String>("kstudents", "Student"),
-						new Pair<String, String>("klecturers", "Lecturer"));
+//						new Pair<String, String>("kstudents", "Student"),
+//						new Pair<String, String>("klecturers", "Lecturer"));
+						new Pair<String, String>("kself", "Student"));
 
 		// Properties of the security variables
-		final static List<String> properties = Arrays.asList();
+		final static List<String> properties = Arrays.asList(
+				"Lecturer.allInstances()->forAll(l|l.age <= kcaller.age)"
+				);
 		
 		// role of caller
 		final static String role = "Lecturer";
 
 		// if caller reads an attribute of a class
-		final static boolean isAttribute = false;
-		final static String entityToRead = null;
-		final static String attributeToRead = null;
+		final static boolean isAttribute = true;
+		final static String entityToRead = "Student";
+		final static String attributeToRead = "age";
 		
 		// if caller reads an association
 		// note: please change the boolean isAttribute = false.
-		final static String associationToRead = "Enrollment";
+		final static String associationToRead = null;
 		
 		// checkAuthroized negate the authorization constraints
 		final static boolean checkAuthroized = true;
@@ -81,7 +83,7 @@ public class Runner {
 		for (String inv : Context.invariants) {
 			OclExp exp = (OclExp) oclParser.parse(inv, dataModel);
 			OCL2MSFOL.setExpression(exp);
-			formulas.addAll(OCL2MSFOL.map2msfol());
+			formulas.addAll(OCL2MSFOL.map2msfol(false));
 		}
 		// Init Security Model object
 		SecurityModel securityModel = SMParser.fromFilePath(Context.securityModelFilePath);
@@ -98,7 +100,7 @@ public class Runner {
 			OclExp exp = (OclExp) oclParser.parse(prop, dataModel);
 			OCL2MSFOL.setExpression(exp);
 			OCL2MSFOL.setLvalue(LogicValue.TRUE);
-			formulas.addAll(OCL2MSFOL.map2msfol());
+			formulas.addAll(OCL2MSFOL.map2msfol(false));
 		}
 		// sAuth is the final authorization constraint that need to be checked.
 		String sAuth = null;
@@ -120,13 +122,15 @@ public class Runner {
 		// Parse it into OclExp object
 		OclExp oclAuth = (OclExp) oclParser.parse(sAuth, dataModel);
 		// Depends on the mode, decide to negate it or not.
+		boolean negation = false;
 		if (Context.checkAuthroized) {
-			oclAuth = new OperationCallExp(null, new Operation("not"), Arrays.asList(oclAuth));
+//			oclAuth = new OperationCallExp(null, new Operation("not"), Arrays.asList(oclAuth));
+			negation = true;
 		}
 		// Generate its FOL formula
 		OCL2MSFOL.setExpression(oclAuth);
 		OCL2MSFOL.setLvalue(LogicValue.TRUE);
-		formulas.addAll(OCL2MSFOL.map2msfol());
+		formulas.addAll(OCL2MSFOL.map2msfol(negation));
 		// Adding (check-sat) and (get-models)
 		formulas.add("(check-sat)");
 		formulas.add("(get-model)");

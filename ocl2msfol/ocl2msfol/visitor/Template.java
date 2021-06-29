@@ -29,7 +29,7 @@ public class Template {
 		public static String not = "%s";
 		public static String and = "(and %s %s)";
 		public static String or = "(or %s %s)";
-		public static String lessthan = "(and (< %3$s %4$s) (not (or %1$s %5$s %2$s %6$s)))";
+		public static String comparison = "(and (%1$s %4$s %5$s) (not (or %2$s %6$s %3$s %7$s)))";
 		public static String implies = "(or %s %s)";
 		public static String isEmpty = "(forall ((%s %s))(and (not %s) (not %s)))";
 		public static String notEmpty = "(exists ((%s %s))(and %s (not %s)))";
