@@ -31,7 +31,10 @@ The repository is structured as follows:
 ## Solution prerequisites
 
 ### Software Requirements
-- (required) Python 3.1 (or higher).
+- (required) Python 3.1 (or higher), can be downloaded from https://www.python.org/downloads/.
 - (required) Maven Apache and Java 1.8 (or higher).
-- (optional) CVC4 solver, can be downloaded from https://cvc4.github.io/.
-- (optional) Z3 solver, can be downloaded from https://github.com/Z3Prover/z3.
+
+* Note: Please note that, if you decided to use any other SMT solver of your choice, 
+please create a corresponding folder with appropriate name in the parent folder *solvers*.
+Put your solver inside this created folder and create an *solving.ini* file, indicate how
+to run the solver.
