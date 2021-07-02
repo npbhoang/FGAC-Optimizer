@@ -18,7 +18,6 @@ limitations under the License.
 
 package main;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +59,7 @@ public class DM2MSFOL {
 		dm = dm_;
 	}
 
-	public static List<String> map2msfol(DataModel dm_) throws IOException {
+	public static List<String> map2msfol(DataModel dm_) {
 		setDataModel(dm_);
 		List<String> formulas = new ArrayList<String>();
 		formulas.addAll(generateEntitiesTheory());
@@ -70,7 +69,7 @@ public class DM2MSFOL {
 		return formulas;
 	}
 
-	private static List<String> generateAuxiliaryTheory() throws IOException {
+	private static List<String> generateAuxiliaryTheory() {
 		List<String> formulas = new ArrayList<String>();
 		for (Entity e : dm.getEntities().values()) {
 			List<Entity> exclusion = new ArrayList<Entity>();
@@ -96,7 +95,7 @@ public class DM2MSFOL {
 		return formulas;
 	}
 
-	private static List<String> generateAssociationEndsTheory() throws IOException {
+	private static List<String> generateAssociationEndsTheory() {
 		List<String> formulas = new ArrayList<String>();
 		for (Association as : dm.getAssociations()) {
 			if (as.isManyToMany()) {
@@ -129,7 +128,7 @@ public class DM2MSFOL {
 		return formulas;
 	}
 
-	private static List<String> generateAttributesTheory() throws IOException {
+	private static List<String> generateAttributesTheory() {
 		List<String> formulas = new ArrayList<String>();
 		for (Entity e : dm.getEntities().values()) {
 			formulas.addAll(generateAttributesEntityTheory(e));
@@ -137,7 +136,7 @@ public class DM2MSFOL {
 		return formulas;
 	}
 
-	private static List<String> generateAttributesEntityTheory(Entity e) throws IOException {
+	private static List<String> generateAttributesEntityTheory(Entity e) {
 		List<String> formulas = new ArrayList<String>();
 		formulas.add(String.format(Template.ENTITY_1_BIS, e.getName()));
 		for (Attribute at : e.getAttributes()) {
@@ -146,8 +145,7 @@ public class DM2MSFOL {
 		return formulas;
 	}
 
-	private static List<String> generateAttributeEntityTheory(Entity e, Attribute at)
-			throws IOException {
+	private static List<String> generateAttributeEntityTheory(Entity e, Attribute at) {
 		List<String> formulas = new ArrayList<String>();
 		formulas.add(String.format(Template.ATTRIBUTE, at.getName(), e.getName(),
 				at.getType().compareTo("String") == 0 ? "String" : "Int"));
@@ -160,7 +158,7 @@ public class DM2MSFOL {
 		return formulas;
 	}
 
-	private static List<String> generateEntitiesTheory() throws IOException {
+	private static List<String> generateEntitiesTheory() {
 		List<String> formulas = new ArrayList<String>();
 		for (Entity entity : dm.getEntities().values()) {
 			formulas.addAll(generateEntityTheory(entity));
@@ -168,7 +166,7 @@ public class DM2MSFOL {
 		return formulas;
 	}
 
-	private static List<String> generateEntityTheory(Entity e) throws IOException {
+	private static List<String> generateEntityTheory(Entity e) {
 		List<String> formulas = new ArrayList<String>();
 		formulas.add(String.format(Template.ENTITY, e.getName()));
 		formulas.add(String.format(Template.ENTITY_1, e.getName()));

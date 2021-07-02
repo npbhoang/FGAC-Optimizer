@@ -20,9 +20,9 @@ limitations under the License.
 import java.util.Map;
 import java.util.Set;
 
-import dmparser.models.Attribute;
+import dmparser.models.Association;
 import dmparser.models.DataModel;
-import dmparser.models.Entity;
+import dmparser.utils.DmUtils;
 import oclparser.expressions.AssociationClassCallExp;
 import oclparser.expressions.BooleanLiteralExp;
 import oclparser.expressions.Expression;
@@ -182,14 +182,15 @@ public class O2F_EvalVisitor extends OCL2MSFOLVisitor {
             this.setFOLFormulae(String.format(template, association,
                 evalVisitor.getFOLFormulae(), clazz));
         } else {
-        	String association = associationClassCallExp.getAssociation();
+        	String sAssociation = associationClassCallExp.getAssociation();
+        	Association association = DmUtils.getAssociation(dm, sAssociation); 
         	String template = Template.Eval.association_n_arity;
         	evalVisitor = new O2F_EvalVisitor(dm,adhocContextualSet,defC);
             Expression exp = associationClassCallExp.getNavigationSource();
             exp.accept(evalVisitor);
-            this.setFOLFormulae(String.format(template, association,
-                    associationClassCallExp.getReferredAssociationEndType(),
-                    associationClassCallExp.getOppositeAssociationEndType()));
+            this.setFOLFormulae(String.format(template, association.getName(),
+            		association.getLeftEntityName(),
+            		association.getRightEntityName()));
         }
     }
 

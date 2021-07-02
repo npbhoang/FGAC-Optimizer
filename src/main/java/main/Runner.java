@@ -1,18 +1,12 @@
 package main;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
-
-import org.json.simple.parser.ParseException;
 
 import dmparser.models.Association;
 import dmparser.models.Attribute;
 import dmparser.models.DataModel;
 import dmparser.models.Entity;
 import dmparser.models.Pair;
-import dmparser.utils.DmUtils;
 import ocl2msfol.visitor.LogicValue;
 import oclparser.expressions.OclExp;
 import oclparser.expressions.Variable;
@@ -24,79 +18,35 @@ import utils.PrintingUtils;
 
 public class Runner {
 
-	public static class Context {
-		
-		// Data Model
-		final static String dataModelFilePath = "src\\main\\resources\\university.json";
-		
-		// List of data invariants
-		final static List<String> invariants = Arrays.asList(
-//				"Lecturer.allInstances()->forAll(l|Student.allInstances()->forAll(s|l.students->includes(s)))"
-				);
-		
-		// Security Model
-//		final static String securityModelFilePath = "src\\main\\resources\\secVGU#3.json";
-		final static String securityModelFilePath = "src\\main\\resources\\secVGU#2.json";
-		
-		// Security variables: self, caller, association-ends
-		// For now, please add "k" as a prefix of these variables.
-		final static List<Pair<String, String>> securityVariables = Arrays
-				.asList(new Pair<String, String>("kcaller", "Lecturer"), 
-//						new Pair<String, String>("kstudents", "Student"),
-//						new Pair<String, String>("klecturers", "Lecturer"));
-						new Pair<String, String>("kself", "Student"));
-
-		// Properties of the security variables
-		final static List<String> properties = Arrays.asList(
-				"Lecturer.allInstances()->forAll(l|l.age <= kcaller.age)"
-				);
-		
-		// role of caller
-		final static String role = "Lecturer";
-
-		// if caller reads an attribute of a class
-		final static boolean isAttribute = true;
-		final static String entityToRead = "Student";
-		final static String attributeToRead = "age";
-		
-		// if caller reads an association
-		// note: please change the boolean isAttribute = false.
-		final static String associationToRead = null;
-		
-		// checkAuthroized negate the authorization constraints
-		final static boolean checkAuthroized = true;
-			
-	}
-
-	public static void main(String[] args) throws FileNotFoundException, IOException, ParseException, Exception {
-		
+	public void run(Configuration c) {
 		// Init DataModel object.
-		DataModel dataModel = DMParser.fromFilePath(Context.dataModelFilePath);
+		DataModel dataModel = c.getDataModelFile();
 		// Init array that stores all FOL formulas.
 		List<String> formulas = PrintingUtils.init();
-		// Generate the data model theories.		
+		// Generate the data model theories.
 		formulas.addAll(DM2MSFOL.map2msfol(dataModel));
 		// Init OCLParser, set the data model
 		OCLParser oclParser = new OCLParser();
 		OCL2MSFOL.setDataModel(dataModel);
 		// Generate data invariant formulas
-		for (String inv : Context.invariants) {
+		for (String inv : c.getOclInvariants()) {
 			OclExp exp = (OclExp) oclParser.parse(inv, dataModel);
 			OCL2MSFOL.setExpression(exp);
 			formulas.addAll(OCL2MSFOL.map2msfol(false));
 		}
 		// Init Security Model object
-		SecurityModel securityModel = SMParser.fromFilePath(Context.securityModelFilePath);
+		SecurityModel securityModel = c.getSecurityModelFile();
 		// Set security context variables into OCL parsing environment.
 		// Otherwise, it cannot parse.
-		// Also, add basic properties about these variables into the theory, i.e. what class it belongs.
-		for (Pair<String, String> pair : Context.securityVariables) {
+		// Also, add basic properties about these variables into the theory, i.e. what
+		// class it belongs.
+		for (Pair<String, String> pair : c.getSecurityVariables()) {
 			oclParser.putAdhocContextualSet(new Variable(pair.getLeft(), new Type(pair.getRight())));
 			formulas.add(String.format("(declare-const %s %s)", pair.getLeft(), "Classifier"));
 			formulas.add(String.format("(assert (%s %s))", pair.getRight(), pair.getLeft()));
 		}
 		// Generate properties formulas
-		for (String prop : Context.properties) {
+		for (String prop : c.getOclProperties()) {
 			OclExp exp = (OclExp) oclParser.parse(prop, dataModel);
 			OCL2MSFOL.setExpression(exp);
 			OCL2MSFOL.setLvalue(LogicValue.TRUE);
@@ -104,27 +54,28 @@ public class Runner {
 		}
 		// sAuth is the final authorization constraint that need to be checked.
 		String sAuth = null;
-		
-		if (Context.isAttribute) {
+
+		if (c.getIsAttribute()) {
 			// If the caller want to read an attribute
 			// We get the entity and attribute from the data model,
-			// then retrieve the authorization constraint of this attribute from security model
-			Entity entity = DmUtils.getEntity(dataModel, Context.entityToRead);
-			Attribute attribute = DmUtils.getAttribute(entity, Context.attributeToRead);
-			sAuth = RuleUtils.getPolicyForAttribute(securityModel, entity, attribute, Context.role);
+			// then retrieve the authorization constraint of this attribute from security
+			// model
+			Entity entity = c.getEntity();
+			Attribute attribute = c.getAttribute();
+			sAuth = RuleUtils.getPolicyForAttribute(securityModel, entity, attribute, c.getsRole());
 		} else {
 			// If the caller want to read an association
 			// We get the association from the data model,
 			// then retrieve the authorization constraint from security model
-			Association association = DmUtils.getAssociation(dataModel, Context.associationToRead);
-			sAuth = RuleUtils.getPolicyForAssociation(securityModel, association, Context.role);
+			Association association = c.getAssociation();
+			sAuth = RuleUtils.getPolicyForAssociation(securityModel, association, c.getsRole());
 		}
 		// Parse it into OclExp object
 		OclExp oclAuth = (OclExp) oclParser.parse(sAuth, dataModel);
 		// Depends on the mode, decide to negate it or not.
 		boolean negation = false;
-		if (Context.checkAuthroized) {
-//			oclAuth = new OperationCallExp(null, new Operation("not"), Arrays.asList(oclAuth));
+		if (c.getCheckAuthorized()) {
+//					oclAuth = new OperationCallExp(null, new Operation("not"), Arrays.asList(oclAuth));
 			negation = true;
 		}
 		// Generate its FOL formula
@@ -133,9 +84,10 @@ public class Runner {
 		formulas.addAll(OCL2MSFOL.map2msfol(negation));
 		// Adding (check-sat) and (get-models)
 		formulas.add("(check-sat)");
-		formulas.add("(get-model)");
+//		formulas.add("(get-model)");
 		// Printout all formulas.
 		formulas.forEach(s -> System.out.println(s));
 
 	}
+
 }

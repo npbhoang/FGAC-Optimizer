@@ -39,10 +39,6 @@ public class SecurityModel {
     public String toString() {
         return "SecPolicyModel [rules=" + rules + "]";
     }
-
-    public SecurityModel(List<RuleModel> rules) {
-        this.rules = rules;
-    }
     
     public SecurityModel(JSONArray entitiesJSON) {
         List<RuleModel> rules = new ArrayList<RuleModel>();

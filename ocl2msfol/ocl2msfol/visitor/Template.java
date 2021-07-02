@@ -31,11 +31,11 @@ public class Template {
 		public static String or = "(or %s %s)";
 		public static String comparison = "(and (%1$s %4$s %5$s) (not (or %2$s %6$s %3$s %7$s)))";
 		public static String implies = "(or %s %s)";
-		public static String isEmpty = "(forall ((%s %s))(and (not %s) (not %s)))";
-		public static String notEmpty = "(exists ((%s %s))(and %s (not %s)))";
-		public static String forAll = "(forall ((%s %s))(and (=> %s %s) (not %s)))";
-		public static String exists = "(exists ((%s %s))(and (and %s %s) (not %s)))";
-		public static String includes = "(exists ((%s %s))(and %s %s (not %s) (not %s)))";
+		public static String isEmpty = "(forall ((%s %s)) (and (not %s) (not %s)))";
+		public static String notEmpty = "(exists ((%s %s)) (and %s (not %s)))";
+		public static String forAll = "(forall ((%s %s)) (and (=> %s %s) (not %s)))";
+		public static String exists = "(exists ((%s %s)) (and (and %s %s) (not %s)))";
+		public static String includes = "(exists ((%s %s)) (and %s %s (not %s) (not %s)))";
 	}
 
 	public static class False {
@@ -49,11 +49,11 @@ public class Template {
 		public static String and = "(or %s %s)";
 		public static String or = "(and %s %s)";
 		public static String implies = "(and %s %s)";
-		public static String isEmpty = "(exists ((%s %s))(and %s (not %s)))";
-		public static String notEmpty = "(forall ((%s %s))(and (not %s) (not %s)))";
-		public static String forAll = "(exists ((%s %s))(and (and %s %s) (not %s)))";
-		public static String exists = "(forall ((%s %s))(and (=> %s %s) (not %s)))";
-		public static String includes = "(forall ((%s %s))(and (=> %s %s) (not %s) (not %s)))";
+		public static String isEmpty = "(exists ((%s %s)) (and %s (not %s)))";
+		public static String notEmpty = "(forall ((%s %s)) (and (not %s) (not %s)))";
+		public static String forAll = "(exists ((%s %s)) (and (and %s %s) (not %s)))";
+		public static String exists = "(forall ((%s %s)) (and (=> %s %s) (not %s)))";
+		public static String includes = "(forall ((%s %s)) (and (=> %s %s) (not %s) (not %s)))";
 	}
 
 	public static class Null {
@@ -71,7 +71,7 @@ public class Template {
 		public static String isEmpty = "false";
 		public static String notEmpty = "false";
 		public static String forAll = "(and (not %1$s) (exists ((%2$s %3$s))(and %4$s %5$s)) (forall ((%2$s %3$s))(=> %4$s (or %6$s %5$s))))";
-		public static String exists = "(and (not %s) (exists ((%s %s))(and %s %s)) (forall ((%s %s))(=> %s (or %s %s))))";
+		public static String exists = "(and (not %s) (exists ((%s %s))(and %s %s)) (forall ((%s %s)) (=> %s (or %s %s))))";
 		// Non-boolean expressions
 		public static String intLiteral = "false";
 		public static String variable = "(= %s %s)";
@@ -96,8 +96,8 @@ public class Template {
 		public static String isEmpty = "%s";
 		public static String notEmpty = "%s";
 		public static String select = "%s";
-		public static String forAll = "(or %s (and (exists ((%s %s))(and %s %s)) (forall ((%s %s))(=> %s (or %s %s %s)))))";
-		public static String exists = "(or %s (and (exists ((%s %s))(and %s %s)) (forall ((%s %s))(=> %s (or %s %s %s)))))";
+		public static String forAll = "(or %s (and (exists ((%s %s)) (and %s %s)) (forall ((%s %s)) (=> %s (or %s %s %s)))))";
+		public static String exists = "(or %s (and (exists ((%s %s)) (and %s %s)) (forall ((%s %s)) (=> %s (or %s %s %s)))))";
 		// Non-boolean expressions
 		public static String intLiteral = "false";
 		public static String variable = "(= %s %s)";

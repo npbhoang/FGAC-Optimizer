@@ -1,6 +1,7 @@
 [
 	{
 		"class": "Lecturer",
+		"isUserClass": "true",
 		"attributes": [
 			{
 				"name": "name",
