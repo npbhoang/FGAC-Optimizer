@@ -1,4 +1,4 @@
-(declare-sort Classifier 0)
+(set-logic UFSLIA)(declare-sort Classifier 0)
 (declare-const nullClassifier Classifier)
 (declare-const invalidClassifier Classifier)
 (declare-const nullInt Int)
@@ -64,6 +64,5 @@
 (assert (Lecturer kcaller))
 (declare-const kself Classifier)
 (assert (Student kself))
-(assert (exists ((temp Classifier)) (and (Enrollment kcaller temp) (= temp kself) (not (or (= kcaller nullClassifier) (= kcaller invalidClassifier))) (not (= kself invalidClassifier)))))
 (assert (not (exists ((temp Classifier)) (and (Enrollment kcaller temp) (= temp kself) (not (or (= kcaller nullClassifier) (= kcaller invalidClassifier))) (not (= kself invalidClassifier))))))
 (check-sat)

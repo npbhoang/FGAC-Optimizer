@@ -42,30 +42,30 @@ def execute(conf):
     shutil.copy(header, result_file)
     # os.environ['Runs'] = str(conf.Runs)
     path_to_datamodel = os.path.abspath(os.path.join(BASE_DIRECTORY, "src", "main", "resources", "{0}.json".format(conf.DataModel)))
-    os.environ['PathToDataModel'] = path_to_datamodel
+    os.environ['PATHTODATAMODEL'] = path_to_datamodel
     print("DataModel: " + path_to_datamodel)
     path_to_securitymodel = os.path.abspath(os.path.join(BASE_DIRECTORY, "src", "main", "resources", "{0}.json".format(conf.SecurityModel)))
-    os.environ['PathToSecurityModel'] = path_to_securitymodel
+    os.environ['PATHTOSECURITYMODEL'] = path_to_securitymodel
     print("SecurityModel: " + path_to_securitymodel)
-    os.environ['Invariants'] = "##".join(conf.Invariants)
+    os.environ['INVARIANTS'] = "##".join(conf.Invariants)
     print("Invariants: ")
     for iInv, inv in enumerate(conf.Invariants):
         print("\t" + str(iInv) + ". " + inv)
-    os.environ['Role'] = conf.Role
+    os.environ['ROLE'] = conf.Role
     print("Role: " + conf.Role)
     print("Action: READ")
     if hasattr(conf.Resource, 'Association'):
-        os.environ['Association'] = conf.Resource.Association
+        os.environ['ASSOCIATION'] = conf.Resource.Association
         print("Resource: (" + conf.Resource.Association + ")")
     else:
-        os.environ['Entity'] = conf.Resource.Entity
-        os.environ['Attribute'] = conf.Resource.Attribute
+        os.environ['ENTITY'] = conf.Resource.Entity
+        os.environ['ATTRIBUTE'] = conf.Resource.Attribute
         print("Resource: (" + conf.Resource.Entity + ":" + conf.Resource.Attribute + ")")
-    os.environ['Properties'] = "##".join(conf.Properties)
+    os.environ['PROPERTOES'] = "##".join(conf.Properties)
     print("Properties: ")
     for iProp, prop in enumerate(conf.Properties):
         print("\t" + str(iProp) + ". " + prop)    
-    os.environ['CheckAuthorized'] = conf.CheckAuthorized
+    os.environ['CHECKAUTHORIZED'] = conf.CheckAuthorized
     print("Check authorized: " + conf.CheckAuthorized)
 
     config = ConfigParser.ConfigParser()
