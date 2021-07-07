@@ -31,10 +31,46 @@ The repository is structured as follows:
 ## Solution prerequisites
 
 ### Software Requirements
-- (required) Python 3.1 (or higher), can be downloaded from https://www.python.org/downloads/.
-- (required) Maven Apache and Java 1.8 (or higher).
+- (required) Python 3.3 (or higher), can be downloaded from https://www.python.org/downloads/.
+- (required) Maven 3 and Java 1.8 (or higher).
 
-* Note: Please note that, if you decided to use any other SMT solver of your choice, 
+*Note*: if you decided to use any other SMT solver of your choice, 
 please create a corresponding folder with appropriate name in the parent folder *solvers*.
 Put your solver inside this created folder and create an *solving.ini* file, indicate how
 to run the solver.
+
+### How to use the tool
+
+#### First step: Define your data model and security model in JSON format.
+- The data model and security model in JSON representation follows the definition in the thesis.
+- Please store the models in the predefined folder, namely /src/main/resources.
+- For example, consult a sample data model [here](https://github.com/npbhoang/sqlsi-/blob/00a6616542cd3175a8280991d25dcb4ca963d478/src/main/resources/university.json) and a sample security model [here](https://github.com/npbhoang/sqlsi-/blob/00a6616542cd3175a8280991d25dcb4ca963d478/src/main/resources/secVGU%232.json)
+*Note*: Please remember to choose an entity as userClass.
+
+#### Second step: Define your configuration file.
+- The configuration file is a JSON object contains the following fields:
+  - DataModel: the filename of the data model in JSON, without the suffix.
+  - SecurityModel: the filename of the security model in JSON, without the suffix.
+  - Invariants: an array of OCL expressions, written as String.
+  - Role: a role, as String.
+  - Action: a action, at the moment, we only support READ.
+  - Resource: a target resource to be act, either an attribute or an association.
+  - Properties: an array of OCL expressions, written as String.
+  - CheckAuthorized: the mode to check, either true or false.
+  - Solvers: an array of solvers, at the moment, we support CVC4 and Z3.
+  - Timeout: a timeout value, as an integer.
+- Please store the configuration in the predefined folder, namely /config.
+- For example, consult a sample configuration [here](https://github.com/npbhoang/sqlsi-/blob/00a6616542cd3175a8280991d25dcb4ca963d478/config/config.json).
+
+#### Third step: Change the script and run it.
+- Go to /script/run.py, change the content of line 15 to
+```
+CONFIG_FILENAME = '<config-file>.json'
+```
+where <config-file> is the filename of the configuration you want to run.
+- Run the script via command:
+```
+python run.py -bes
+```
+where -b is to build the Java project by Maven, -e is to execute the generation of MSFOL theory and -s is to solve the theory using solvers.
+- The result should display on the console, otherwise, consult the folder /results.
