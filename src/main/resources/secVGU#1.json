@@ -1,0 +1,42 @@
+[
+	{
+		"roles": [
+			"Admin"
+		],
+		"actions": [
+			"read"
+		],
+		"resources": [
+			{
+				"entity": "Student",
+				"attribute": "age"
+			}
+		],
+		"auth": [
+			{
+				"ocl": "true",
+				"sql": "TRUE"
+			}
+		]
+	},
+	{
+		"roles": [
+			"Admin"
+		],
+		"actions": [
+			"read"
+		],
+		"resources": [
+			{
+				"association": "Enrollment"
+			}
+		],
+		"auth": [
+			{
+				"ocl": "true",
+				"sql": "TRUE"
+			}
+		]
+	}
+] 
+

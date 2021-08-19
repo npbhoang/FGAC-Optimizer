@@ -12,7 +12,7 @@ import configparser as ConfigParser
 import json
 
 BASE_DIRECTORY = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CONFIG_FILENAME = 'config.json'
+CONFIG_FILENAME = 'Example3bb.json'
 
 print("Running SQLSI+ with root directory " + BASE_DIRECTORY)
 
@@ -50,7 +50,7 @@ def execute(conf):
     os.environ['INVARIANTS'] = "##".join(conf.Invariants)
     print("Invariants: ")
     for iInv, inv in enumerate(conf.Invariants):
-        print("\t" + str(iInv) + ". " + inv)
+        print("  " + str(iInv) + ". " + inv)
     os.environ['ROLE'] = conf.Role
     print("Role: " + conf.Role)
     print("Action: READ")
@@ -61,10 +61,10 @@ def execute(conf):
         os.environ['ENTITY'] = conf.Resource.Entity
         os.environ['ATTRIBUTE'] = conf.Resource.Attribute
         print("Resource: (" + conf.Resource.Entity + ":" + conf.Resource.Attribute + ")")
-    os.environ['PROPERTOES'] = "##".join(conf.Properties)
+    os.environ['PROPERTIES'] = "##".join(conf.Properties)
     print("Properties: ")
     for iProp, prop in enumerate(conf.Properties):
-        print("\t" + str(iProp) + ". " + prop)    
+        print("  " + str(iProp) + ". " + prop)    
     os.environ['CHECKAUTHORIZED'] = conf.CheckAuthorized
     print("Check authorized: " + conf.CheckAuthorized)
 
@@ -78,7 +78,11 @@ def execute(conf):
         with subprocess.Popen(config.get('run', 'cmd'), shell=True, stdout=subprocess.PIPE,
                                 start_new_session=True) as process:
             try:
+                import time
+                start_time = time.time()
                 stdout, stderr = process.communicate(timeout=conf.Timeout)
+                end_time = time.time()
+                print("Generating FOL theory in {0} seconds".format(end_time-start_time))
                 return_code = process.poll()
                 if return_code:
                     raise subprocess.CalledProcessError(return_code, process.args,
@@ -88,7 +92,6 @@ def execute(conf):
                 raise
         with open(result_file, "ab") as file:
             file.write(stdout)
-        print("---Done generating FOL theory---")
     except subprocess.TimeoutExpired as e:
         print("Program reached the timeout set ({0} seconds). The command we executed was '{1}'".format(e.timeout, e.cmd))
 

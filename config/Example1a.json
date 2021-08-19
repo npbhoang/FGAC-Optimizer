@@ -5,12 +5,9 @@
     "Role": "Lecturer",
     "Action": "READ",
     "Resource": {
-        "Entity": "Student",
-        "Attribute": "age"
+        "Association": "Enrollment"
     },
-    "Properties": [
-        "kcaller.students->includes(kself)"
-    ],
+    "Properties": [],
     "CheckAuthorized": "true",
     "Solvers": ["CVC4","CVC4fmf","Z3"],
     "Timeout": 6000

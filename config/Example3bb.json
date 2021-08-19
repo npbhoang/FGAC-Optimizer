@@ -1,18 +1,14 @@
 {
     "DataModel": "University",
     "SecurityModel": "secVGU#3",
-    "Invariants": [
-        "Lecturer.allInstances()->forAll(l|Student.allInstances()->forAll(s|l.students->includes(s)))"
-    ],
+    "Invariants": [],
     "Role": "Lecturer",
     "Action": "READ",
     "Resource": {
         "Entity": "Student",
         "Attribute": "age"
     },
-    "Properties": [
-        "kcaller.students->includes(kself)"
-    ],
+    "Properties": [],
     "CheckAuthorized": "true",
     "Solvers": ["CVC4","CVC4fmf","Z3"],
     "Timeout": 6000

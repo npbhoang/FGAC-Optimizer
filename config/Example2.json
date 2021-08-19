@@ -1,14 +1,11 @@
 {
     "DataModel": "University",
     "SecurityModel": "secVGU#2",
-    "Invariants": [
-        "Lecturer.allInstances()->forAll(l|Student.allInstances()->forAll(s|l.students->includes(s)))"
-    ],
+    "Invariants": [],
     "Role": "Lecturer",
     "Action": "READ",
     "Resource": {
-        "Entity": "Student",
-        "Attribute": "age"
+        "Association": "Enrollment"
     },
     "Properties": [
         "Lecturer.allInstances()->forAll(l|l.age<=kcaller.age)"

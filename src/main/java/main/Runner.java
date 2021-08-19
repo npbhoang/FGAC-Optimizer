@@ -45,6 +45,13 @@ public class Runner {
 			formulas.add(String.format("(declare-const %s %s)", pair.getLeft(), "Classifier"));
 			formulas.add(String.format("(assert (%s %s))", pair.getRight(), pair.getLeft()));
 		}
+		// This is for adding new axiom for association
+		if (!c.getIsAttribute()) {
+			Association association = c.getAssociation();
+			String leftVariable = c.getSecurityVariables().get(1).getLeft();
+			String rightVariable = c.getSecurityVariables().get(2).getLeft();
+			formulas.add(String.format("(assert (%s %s %s))", association.getName(), leftVariable, rightVariable));
+		}
 		// Generate properties formulas
 		for (String prop : c.getOclProperties()) {
 			OclExp exp = (OclExp) oclParser.parse(prop, dataModel);

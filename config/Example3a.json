@@ -1,9 +1,7 @@
 {
     "DataModel": "University",
     "SecurityModel": "secVGU#3",
-    "Invariants": [
-        "Lecturer.allInstances()->forAll(l|Student.allInstances()->forAll(s|l.students->includes(s)))"
-    ],
+    "Invariants": [],
     "Role": "Lecturer",
     "Action": "READ",
     "Resource": {

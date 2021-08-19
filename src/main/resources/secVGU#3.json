@@ -15,7 +15,7 @@
 		"auth": [
 			{
 				"ocl": "kcaller.students->includes(kself)",
-				"sql": "TBC"
+				"sql": "EXISTS (SELECT 1 FROM Enrollment WHERE lecturers = kcaller AND kself = students)"
 			}
 		]
 	},
@@ -34,7 +34,7 @@
 		"auth": [
 			{
 				"ocl": "kstudents.lecturers->includes(kcaller)",
-				"sql": "TBC"
+				"sql": "EXISTS (SELECT 1 FROM Enrollment WHERE lecturers = kcaller AND kstudents = students)"
 			}
 		]
 	}
