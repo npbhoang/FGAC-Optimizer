@@ -1,1 +1,5 @@
 /target/
+solvers/CVC4/cvc4.exe
+solvers/Z3/LICENSE.txt
+solvers/Z3/include/
+solvers/Z3/bin/
