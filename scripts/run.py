@@ -12,14 +12,13 @@ import configparser as ConfigParser
 import json
 
 BASE_DIRECTORY = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CONFIG_FILENAME = 'Example3bb.json'
+CONFIG_FILENAME = 'Example2.json'
 
 print("Running SQLSI+ with root directory " + BASE_DIRECTORY)
 
 class JSONObject(object):
     def __init__(self, d):
         self.__dict__ = d
-
 
 def build(conf, skip_tests=False):
     config = ConfigParser.ConfigParser()
@@ -35,6 +34,7 @@ def execute(conf):
     """
     Execution SQLSI+
     """
+    print()
     header = os.path.join(BASE_DIRECTORY, "output", "header.smt2")
     result_file = os.path.join(BASE_DIRECTORY, "output", "theory.smt2")
     if os.path.exists(result_file):
@@ -43,31 +43,40 @@ def execute(conf):
     # os.environ['Runs'] = str(conf.Runs)
     path_to_datamodel = os.path.abspath(os.path.join(BASE_DIRECTORY, "src", "main", "resources", "{0}.json".format(conf.DataModel)))
     os.environ['PATHTODATAMODEL'] = path_to_datamodel
-    print("DataModel: " + path_to_datamodel)
+    print("[DataModel] " + path_to_datamodel)
     path_to_securitymodel = os.path.abspath(os.path.join(BASE_DIRECTORY, "src", "main", "resources", "{0}.json".format(conf.SecurityModel)))
     os.environ['PATHTOSECURITYMODEL'] = path_to_securitymodel
-    print("SecurityModel: " + path_to_securitymodel)
-    os.environ['INVARIANTS'] = "##".join(conf.Invariants)
-    print("Invariants: ")
-    for iInv, inv in enumerate(conf.Invariants):
-        print("  " + str(iInv) + ". " + inv)
+    print("[SecurityModel] " + path_to_securitymodel)
+    if hasattr(conf, 'Invariants'):
+        os.environ['INVARIANTS'] = "##".join(conf.Invariants)
+        print("[Invariants] ")
+        for iInv, inv in enumerate(conf.Invariants):
+            print("  " + str(iInv) + ". " + inv)
     os.environ['ROLE'] = conf.Role
-    print("Role: " + conf.Role)
-    print("Action: READ")
+    print("[Role] " + conf.Role)
+    # print("Action: READ")
     if hasattr(conf.Resource, 'Association'):
         os.environ['ASSOCIATION'] = conf.Resource.Association
-        print("Resource: (" + conf.Resource.Association + ")")
+        print("[Resource] (" + conf.Resource.Association + ")")
     else:
         os.environ['ENTITY'] = conf.Resource.Entity
         os.environ['ATTRIBUTE'] = conf.Resource.Attribute
-        print("Resource: (" + conf.Resource.Entity + ":" + conf.Resource.Attribute + ")")
-    os.environ['PROPERTIES'] = "##".join(conf.Properties)
-    print("Properties: ")
-    for iProp, prop in enumerate(conf.Properties):
-        print("  " + str(iProp) + ". " + prop)    
-    os.environ['CHECKAUTHORIZED'] = conf.CheckAuthorized
-    print("Check authorized: " + conf.CheckAuthorized)
+        print("[Resource] (" + conf.Resource.Entity + ":" + conf.Resource.Attribute + ")")
+    if hasattr(conf, 'Properties'):
+        os.environ['PROPERTIES'] = "##".join(conf.Properties)
+        print("[Properties] ")
+        for iProp, prop in enumerate(conf.Properties):
+            print("  " + str(iProp) + ". " + prop)
+    if not hasattr(conf, 'Timeout'):
+        conf.Timeout = 10000
+    print("[Timeout] {0}".format(conf.Timeout))
+    # os.environ['CHECKAUTHORIZED'] = conf.CheckAuthorized
+    # print("Check authorized: " + conf.CheckAuthorized)
+    os.environ['CHECKAUTHORIZED'] = "true"
 
+    print("[INFO] Generating MSFOL theory...")
+    print("[INFO]")
+    print("[INFO] ------------------------------------------------------------------------")
     config = ConfigParser.ConfigParser()
     config.read(os.path.join(BASE_DIRECTORY, "execution.ini"))
     try:
@@ -82,7 +91,12 @@ def execute(conf):
                 start_time = time.time()
                 stdout, stderr = process.communicate(timeout=conf.Timeout)
                 end_time = time.time()
-                print("Generating FOL theory in {0} seconds".format(end_time-start_time))
+                print("[INFO] GENERATE SUCCESS")
+                print("[INFO] ------------------------------------------------------------------------")
+                print("[INFO] Total time: {0} s".format(round(end_time-start_time,3)))
+                print("[INFO] Stored at: {0}".format(result_file))
+                print("[INFO] ------------------------------------------------------------------------")
+                print()
                 return_code = process.poll()
                 if return_code:
                     raise subprocess.CalledProcessError(return_code, process.args,
@@ -93,8 +107,9 @@ def execute(conf):
         with open(result_file, "ab") as file:
             file.write(stdout)
     except subprocess.TimeoutExpired as e:
-        print("Program reached the timeout set ({0} seconds). The command we executed was '{1}'".format(e.timeout, e.cmd))
-
+        print("[ERROR] Program reached the timeout set ({0} seconds)".format(e.timeout))
+        print("[ERROR] The command we executed was '{0}'".format(e.cmd))
+        print()
 
 def clean_dir(*path):
     dir = os.path.join(BASE_DIRECTORY, *path)
@@ -113,7 +128,11 @@ def solve(conf):
     """
     clean_dir("results")
     path_to_theory = os.path.abspath(os.path.join(BASE_DIRECTORY, "output", "theory.smt2"))
+    print("[INFO] Solving MSFOL theory...")
     for solver in conf.Solvers:
+        print("[INFO] Using solver {0}...".format(solver))
+        print("[INFO]")
+        print("[INFO] ------------------------------------------------------------------------")
         result_file = os.path.join(BASE_DIRECTORY, "results", solver)
         config = ConfigParser.ConfigParser()
         config.read(os.path.join(BASE_DIRECTORY, "solvers", solver, "solving.ini"))
@@ -127,14 +146,19 @@ def solve(conf):
                 cmd = [config.get('run', 'cmd'), path_to_theory]
             else:
                 cmd = [config.get('run', 'cmd'), config.get('run', 'arg'), path_to_theory]
-            with subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
+            with subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                     start_new_session=True) as process:
                 try:
                     import time
                     start_time = time.time()
                     stdout, stderr = process.communicate(timeout=conf.Timeout)
                     end_time = time.time()
-                    solvingtime = "Solving time: {0} seconds".format(end_time-start_time)
+                    print("[INFO] SOLVING SUCCESS")
+                    print("[INFO] ------------------------------------------------------------------------")
+                    print("[INFO] Total time: {0} s".format(round(end_time-start_time,3)))
+                    print("[INFO] Stored at: {0}".format(result_file))
+                    print("[INFO] ------------------------------------------------------------------------")
+                    print()
                     return_code = process.poll()
                     if return_code:
                         raise subprocess.CalledProcessError(return_code, process.args,
@@ -144,10 +168,11 @@ def solve(conf):
                     raise
             with open(result_file, "ab") as file:
                 file.write(stdout)
-                file.write(solvingtime.encode())
-            print("Solver {0} returns {1} after {2}".format(solver, stdout.decode("utf-8").rstrip("\r\n"), str(solvingtime)))
+            # print("Solver {0} returns {1} after {2}".format(solver, stdout.decode("utf-8").rstrip("\r\n"), str(solvingtime)))
         except subprocess.TimeoutExpired as e:
-            print("Program reached the timeout set ({0} seconds). The command we executed was '{1}'".format(e.timeout, e.cmd))
+            print("[ERROR] Program reached the timeout set ({0} seconds)".format(e.timeout))
+            print("[ERROR] The command we executed was '{0}'".format(e.cmd))
+            print()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

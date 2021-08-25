@@ -1,16 +1,12 @@
 {
-    "DataModel": "University",
-    "SecurityModel": "secVGU#3",
+    "DataModel": "Uni",
+    "SecurityModel": "Sec#3",
     "Invariants": [
         "Lecturer.allInstances()->forAll(l|Student.allInstances()->forAll(s|l.students->includes(s)))"
     ],
     "Role": "Lecturer",
-    "Action": "READ",
     "Resource": {
         "Association": "Enrollment"
     },
-    "Properties": [],
-    "CheckAuthorized": "true",
-    "Solvers": ["CVC4","CVC4fmf","Z3"],
-    "Timeout": 6000
+    "Solvers": ["CVC4","CVC4fmf","Z3"]
 }

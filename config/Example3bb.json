@@ -1,15 +1,10 @@
 {
-    "DataModel": "University",
-    "SecurityModel": "secVGU#3",
-    "Invariants": [],
+    "DataModel": "Uni",
+    "SecurityModel": "Sec#3",
     "Role": "Lecturer",
-    "Action": "READ",
     "Resource": {
         "Entity": "Student",
         "Attribute": "age"
     },
-    "Properties": [],
-    "CheckAuthorized": "true",
-    "Solvers": ["CVC4","CVC4fmf","Z3"],
-    "Timeout": 6000
+    "Solvers": ["CVC4","CVC4fmf","Z3"]
 }
