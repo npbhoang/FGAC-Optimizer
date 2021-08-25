@@ -65,7 +65,7 @@
 (assert (Lecturer klecturers))
 (declare-const kstudents Classifier)
 (assert (Student kstudents))
-(assert (Enrollment klecturers kstudents))
+;(assert (Enrollment klecturers kstudents))
 (assert (forall ((l Classifier)) (and (=> (Lecturer l) (and (<= (age_Lecturer l) (age_Lecturer kcaller)) (not (or (= (age_Lecturer l) nullInt) (or (= l nullClassifier) (= l invalidClassifier)) (= (age_Lecturer kcaller) nullInt) (or (= kcaller nullClassifier) (= kcaller invalidClassifier)))))) (not false))))
 (assert (not (exists ((temp Classifier)) (and (Enrollment temp kstudents) (= temp kcaller) (not (or (= kstudents nullClassifier) (= kstudents invalidClassifier))) (not (= kcaller invalidClassifier))))))
 (check-sat)
