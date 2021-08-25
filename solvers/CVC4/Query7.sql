@@ -1,0 +1,49 @@
+DROP PROCEDURE IF EXISTS Query7;
+/* SELECT age FROM Student JOIN 
+     (SELECT * FROM Enrollment WHERE lecturers = caller) 
+       ON Student_id = students */
+DELIMITER //
+CREATE PROCEDURE Query7(in kcaller varchar(250), in krole varchar(250))
+BEGIN
+DECLARE _rollback int DEFAULT 0;
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+  SET _rollback = 1;
+  GET STACKED DIAGNOSTICS CONDITION 1 
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+  SELECT @p1, @p2;
+  ROLLBACK;
+END;
+START TRANSACTION;
+
+DROP TEMPORARY TABLE IF EXISTS TEMP1;
+CREATE TEMPORARY TABLE TEMP1 AS (
+SELECT Student_id AS students, Lecturer_id AS lecturers
+FROM Student, Lecturer
+WHERE Lecturer_id = kcaller
+);
+
+DROP TEMPORARY TABLE IF EXISTS TEMP2;
+CREATE TEMPORARY TABLE TEMP2 AS (
+SELECT * FROM TEMP1
+WHERE CASE auth_READ_Enrollment(kcaller, krole, lecturers, students) 
+WHEN TRUE THEN TRUE ELSE throw_error() END
+);
+
+DROP TEMPORARY TABLE IF EXISTS TEMP3;
+CREATE TEMPORARY TABLE TEMP3 AS (
+SELECT * FROM Student JOIN TEMP2 
+ON Student_id = students
+);
+
+DROP TEMPORARY TABLE IF EXISTS TEMP4;
+CREATE TEMPORARY TABLE TEMP4 AS (
+SELECT CASE auth_READ_Student_age(kcaller, krole, Student_id)
+WHEN 1 THEN age ELSE throw_error() END as age FROM TEMP3
+);
+
+IF _rollback = 0
+THEN SELECT age from TEMP4;
+END IF;
+END //
+DELIMITER ;

@@ -12,7 +12,7 @@ import configparser as ConfigParser
 import json
 
 BASE_DIRECTORY = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CONFIG_FILENAME = 'Example3bb.json'
+CONFIG_FILENAME = 'sosym1.json'
 
 print("Running SQLSI+ with root directory " + BASE_DIRECTORY)
 
