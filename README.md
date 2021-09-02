@@ -1,4 +1,4 @@
-# The SQLSI+ tool
+# The FGAC-Optimizer tool
 
 This is an implementation for SQLSI+, as part of my Master thesis.
 
