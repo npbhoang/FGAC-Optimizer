@@ -1,6 +1,6 @@
 # The FGAC-Optimizer tool
 
-This is an implementation for SQLSI+, as part of my Master thesis.
+A Many-Sorted First-order Logic Theory generation for checking the necessity of authorization checks in enforcing Fine-Grained Access Control using SQL Security Injector.
 
 ## Repository materials
 
