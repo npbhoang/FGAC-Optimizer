@@ -4,8 +4,12 @@ import java.util.List;
 
 import org.vgu.dm2schema.dm.Association;
 import org.vgu.dm2schema.dm.Attribute;
+import org.vgu.dm2schema.dm.DataModel;
 import org.vgu.dm2schema.dm.Entity;
 import org.vgu.dm2schema.dm.Pair;
+import org.vgu.se.smt.dm.DM2MSFOL;
+import org.vgu.se.smt.logicvalue.LogicValue;
+import org.vgu.se.smt.ocl.OCL2MSFOL;
 import org.vgu.sqlsi.sec.SecPolicyModel;
 import org.vgu.sqlsi.utils.RuleUtils;
 
@@ -14,14 +18,13 @@ import com.vgu.se.jocl.expressions.Variable;
 import com.vgu.se.jocl.parser.simple.SimpleParser;
 import com.vgu.se.jocl.types.Type;
 
-import ocl2msfol.visitor.LogicValue;
 import utils.PrintingUtils;
 
 public class Runner {
 
 	public void run(Configuration c) {
 		// Init DataModel object.
-		org.vgu.dm2schema.dm.DataModel dataModel = c.getDataModelFile();
+		DataModel dataModel = c.getDataModelFile();
 		// Init array that stores all FOL formulas.
 		List<String> formulas = PrintingUtils.init();
 		// Generate the data model theories.
