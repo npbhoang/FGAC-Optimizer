@@ -6,14 +6,14 @@ import org.vgu.dm2schema.dm.Association;
 import org.vgu.dm2schema.dm.Attribute;
 import org.vgu.dm2schema.dm.Entity;
 import org.vgu.dm2schema.dm.Pair;
+import org.vgu.sqlsi.sec.SecPolicyModel;
+import org.vgu.sqlsi.utils.RuleUtils;
 
 import ocl2msfol.visitor.LogicValue;
 import oclparser.expressions.OclExp;
 import oclparser.expressions.Variable;
 import oclparser.simple.OCLParser;
 import oclparser.types.Type;
-import smparser.models.SecurityModel;
-import smparser.utils.RuleUtils;
 import utils.PrintingUtils;
 
 public class Runner {
@@ -35,7 +35,7 @@ public class Runner {
 			formulas.addAll(OCL2MSFOL.map2msfol(false));
 		}
 		// Init Security Model object
-		SecurityModel securityModel = c.getSecurityModelFile();
+		SecPolicyModel securityModel = c.getSecurityModelFile();
 		// Set security context variables into OCL parsing environment.
 		// Otherwise, it cannot parse.
 		// Also, add basic properties about these variables into the theory, i.e. what

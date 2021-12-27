@@ -16,8 +16,7 @@ import org.vgu.dm2schema.dm.DataModel;
 import org.vgu.dm2schema.dm.DmUtils;
 import org.vgu.dm2schema.dm.Entity;
 import org.vgu.dm2schema.dm.Pair;
-
-import smparser.models.SecurityModel;
+import org.vgu.sqlsi.sec.SecPolicyModel;
 
 public class Launcher {
 
@@ -58,9 +57,9 @@ public class Launcher {
 		if (sSecurityModelPath != null) {
 			final File fileSecurityModel = new File(sSecurityModelPath);
 			if (fileSecurityModel.canRead()) {
-				SecurityModel securityModel;
+				SecPolicyModel securityModel;
 				try {
-					securityModel = new SecurityModel(
+					securityModel = new SecPolicyModel(
 							(JSONArray) new JSONParser().parse(new FileReader(fileSecurityModel)));
 				} catch (IOException | ParseException e) {
 					throw new IllegalArgumentException("Cannot read Securitymodel JSON file " + sSecurityModelPath);

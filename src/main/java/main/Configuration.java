@@ -7,12 +7,11 @@ import org.vgu.dm2schema.dm.Attribute;
 import org.vgu.dm2schema.dm.DataModel;
 import org.vgu.dm2schema.dm.Entity;
 import org.vgu.dm2schema.dm.Pair;
-
-import smparser.models.SecurityModel;
+import org.vgu.sqlsi.sec.SecPolicyModel;
 
 public class Configuration {
 	private DataModel dataModelFile; 
-	private SecurityModel securityModelFile;
+	private SecPolicyModel securityModelFile;
 	private List<String> oclInvariants;
 	private List<Pair<String, String>> securityVariables;
 	private List<String> oclProperties;
@@ -30,11 +29,11 @@ public class Configuration {
 		this.dataModelFile = dataModelFile;
 	}
 
-	public SecurityModel getSecurityModelFile() {
+	public SecPolicyModel getSecurityModelFile() {
 		return securityModelFile;
 	}
 
-	public void setSecurityModelFile(SecurityModel securityModelFile) {
+	public void setSecurityModelFile(SecPolicyModel securityModelFile) {
 		this.securityModelFile = securityModelFile;
 	}
 
