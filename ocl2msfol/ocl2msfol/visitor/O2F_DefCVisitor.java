@@ -7,20 +7,20 @@ import java.util.Set;
 
 import org.vgu.dm2schema.dm.DataModel;
 
-import oclparser.expressions.AssociationClassCallExp;
-import oclparser.expressions.BooleanLiteralExp;
-import oclparser.expressions.Expression;
-import oclparser.expressions.IntegerLiteralExp;
-import oclparser.expressions.IteratorExp;
-import oclparser.expressions.IteratorKind;
-import oclparser.expressions.LiteralExp;
-import oclparser.expressions.OclExp;
-import oclparser.expressions.OperationCallExp;
-import oclparser.expressions.PropertyCallExp;
-import oclparser.expressions.StringLiteralExp;
-import oclparser.expressions.Variable;
-import oclparser.expressions.VariableExp;
-import oclparser.utils.VariableUtils;
+import com.vgu.se.jocl.expressions.AssociationClassCallExp;
+import com.vgu.se.jocl.expressions.BooleanLiteralExp;
+import com.vgu.se.jocl.expressions.Expression;
+import com.vgu.se.jocl.expressions.IntegerLiteralExp;
+import com.vgu.se.jocl.expressions.IteratorExp;
+import com.vgu.se.jocl.expressions.IteratorKind;
+import com.vgu.se.jocl.expressions.LiteralExp;
+import com.vgu.se.jocl.expressions.OclExp;
+import com.vgu.se.jocl.expressions.OperationCallExp;
+import com.vgu.se.jocl.expressions.PropertyCallExp;
+import com.vgu.se.jocl.expressions.StringLiteralExp;
+import com.vgu.se.jocl.expressions.Variable;
+import com.vgu.se.jocl.expressions.VariableExp;
+import com.vgu.se.jocl.utils.VariableUtils;
 
 public class O2F_DefCVisitor extends OCL2MSFOLVisitor {
 

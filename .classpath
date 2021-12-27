@@ -25,7 +25,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="dm2msfol"/>
-	<classpathentry kind="src" path="oclparser"/>
 	<classpathentry kind="src" path="ocl2msfol"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-14">
 		<attributes>
@@ -38,7 +37,9 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/jocl"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/datamodel"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/sqlsi"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ocl2psql"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

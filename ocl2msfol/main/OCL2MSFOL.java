@@ -9,6 +9,12 @@ import java.util.Set;
 
 import org.vgu.dm2schema.dm.DataModel;
 
+import com.vgu.se.jocl.expressions.Expression;
+import com.vgu.se.jocl.expressions.OclExp;
+import com.vgu.se.jocl.expressions.Variable;
+import com.vgu.se.jocl.parser.simple.SimpleParser;
+import com.vgu.se.jocl.types.Type;
+
 import ocl2msfol.visitor.DefC;
 import ocl2msfol.visitor.LogicValue;
 import ocl2msfol.visitor.O2F_FalseVisitor;
@@ -16,11 +22,6 @@ import ocl2msfol.visitor.O2F_InvalidVisitor;
 import ocl2msfol.visitor.O2F_NullVisitor;
 import ocl2msfol.visitor.O2F_TrueVisitor;
 import ocl2msfol.visitor.OCL2MSFOLVisitor;
-import oclparser.expressions.Expression;
-import oclparser.expressions.OclExp;
-import oclparser.expressions.Variable;
-import oclparser.simple.OCLParser;
-import oclparser.types.Type;
 
 public class OCL2MSFOL {
 
@@ -31,7 +32,7 @@ public class OCL2MSFOL {
 	private static Map<Expression, DefC> defC = new HashMap<Expression, DefC>();
 
 	public static void setExpression(String string) {
-		OCLParser OCLParser = new OCLParser();
+		SimpleParser OCLParser = new SimpleParser();
 		adhocContextualSet.forEach(OCLParser::putAdhocContextualSet);
 		Expression exp_ = OCLParser.parse(string, dm);
 		if (exp_ instanceof OclExp)

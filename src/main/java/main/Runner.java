@@ -9,11 +9,12 @@ import org.vgu.dm2schema.dm.Pair;
 import org.vgu.sqlsi.sec.SecPolicyModel;
 import org.vgu.sqlsi.utils.RuleUtils;
 
+import com.vgu.se.jocl.expressions.OclExp;
+import com.vgu.se.jocl.expressions.Variable;
+import com.vgu.se.jocl.parser.simple.SimpleParser;
+import com.vgu.se.jocl.types.Type;
+
 import ocl2msfol.visitor.LogicValue;
-import oclparser.expressions.OclExp;
-import oclparser.expressions.Variable;
-import oclparser.simple.OCLParser;
-import oclparser.types.Type;
 import utils.PrintingUtils;
 
 public class Runner {
@@ -26,7 +27,7 @@ public class Runner {
 		// Generate the data model theories.
 		formulas.addAll(DM2MSFOL.map2msfol(dataModel));
 		// Init OCLParser, set the data model
-		OCLParser oclParser = new OCLParser();
+		SimpleParser oclParser = new SimpleParser();
 		OCL2MSFOL.setDataModel(dataModel);
 		// Generate data invariant formulas
 		for (String inv : c.getOclInvariants()) {

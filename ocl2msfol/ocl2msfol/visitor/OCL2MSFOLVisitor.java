@@ -26,9 +26,9 @@ import java.util.Set;
 import org.vgu.dm2schema.dm.DataModel;
 import org.vgu.dm2schema.dm.Entity;
 
-import oclparser.expressions.Expression;
-import oclparser.expressions.Variable;
-import oclparser.visit.ParserVisitor;
+import com.vgu.se.jocl.expressions.Expression;
+import com.vgu.se.jocl.expressions.Variable;
+import com.vgu.se.jocl.visit.ParserVisitor;
 
 public abstract class OCL2MSFOLVisitor implements ParserVisitor {
     protected DataModel dm;
