@@ -1,0 +1,13 @@
+{
+    "DataModel": "Uni",
+    "SecurityModel": "Sec#2",
+    "Properties": [
+        "kcaller.students->includes(kself)"
+    ],
+    "Role": "Lecturer",
+    "Resource": {
+        "Entity": "Student",
+        "Attribute": "age"
+    },
+    "Solvers": ["CVC4","CVC4fmf","Z3"]
+}

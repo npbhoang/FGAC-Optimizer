@@ -1,0 +1,12 @@
+{
+    "DataModel": "Uni",
+    "SecurityModel": "Sec#3",
+    "Properties": [
+        "kcaller = klecturers"
+    ],
+    "Role": "Lecturer",
+    "Resource": {
+        "Association": "Enrollment"
+    },
+    "Solvers": ["CVC4","CVC4fmf","Z3"]
+}

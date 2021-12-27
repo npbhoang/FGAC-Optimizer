@@ -1,0 +1,12 @@
+{
+    "DataModel": "Uni",
+    "SecurityModel": "Sec#2",
+    "Properties": [
+        "Student.allInstances()->forAll(s|s.lecturers->includes(kcaller))"
+    ],
+    "Role": "Lecturer",
+    "Resource": {
+        "Association": "Enrollment"
+    },
+    "Solvers": ["CVC4","CVC4fmf","Z3"]
+}

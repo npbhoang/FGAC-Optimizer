@@ -33,7 +33,7 @@
 		],
 		"auth": [
 			{
-				"ocl": "kstudents.lecturers->includes(kcaller)",
+				"ocl": "kcaller = klecturers or kstudents.lecturers->includes(kcaller)",
 				"sql": "EXISTS (SELECT 1 FROM Enrollment WHERE lecturers = kcaller AND kstudents = students)"
 			}
 		]

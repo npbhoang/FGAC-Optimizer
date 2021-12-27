@@ -1,0 +1,13 @@
+{
+    "DataModel": "Uni",
+    "SecurityModel": "Sec#3",
+    "Role": "Lecturer",
+    "Resource": {
+        "Entity": "Student",
+        "Attribute": "age"
+    },
+    "Properties": [
+        "Lecturer.allInstances()->forAll(l|l.age<=kcaller.age)"
+    ],
+    "Solvers": ["CVC4","CVC4fmf","Z3"]
+}
