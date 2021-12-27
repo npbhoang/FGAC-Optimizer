@@ -27,8 +27,9 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import dmparser.models.DataModel;
-import dmparser.utils.DmUtils;
+import org.vgu.dm2schema.dm.DataModel;
+import org.vgu.dm2schema.dm.DmUtils;
+
 import oclparser.exception.OclParserException;
 import oclparser.expressions.AssociationClassCallExp;
 import oclparser.expressions.BooleanLiteralExp;

@@ -2,11 +2,11 @@ package main;
 
 import java.util.List;
 
-import dmparser.models.Association;
-import dmparser.models.Attribute;
-import dmparser.models.DataModel;
-import dmparser.models.Entity;
-import dmparser.models.Pair;
+import org.vgu.dm2schema.dm.Association;
+import org.vgu.dm2schema.dm.Attribute;
+import org.vgu.dm2schema.dm.Entity;
+import org.vgu.dm2schema.dm.Pair;
+
 import ocl2msfol.visitor.LogicValue;
 import oclparser.expressions.OclExp;
 import oclparser.expressions.Variable;
@@ -20,7 +20,7 @@ public class Runner {
 
 	public void run(Configuration c) {
 		// Init DataModel object.
-		DataModel dataModel = c.getDataModelFile();
+		org.vgu.dm2schema.dm.DataModel dataModel = c.getDataModelFile();
 		// Init array that stores all FOL formulas.
 		List<String> formulas = PrintingUtils.init();
 		// Generate the data model theories.

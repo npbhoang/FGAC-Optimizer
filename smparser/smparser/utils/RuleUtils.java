@@ -24,9 +24,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import dmparser.models.Association;
-import dmparser.models.Attribute;
-import dmparser.models.Entity;
+import org.vgu.dm2schema.dm.Association;
+import org.vgu.dm2schema.dm.Attribute;
+import org.vgu.dm2schema.dm.Entity;
+
 import smparser.models.Action;
 import smparser.models.AssociationUnitRule;
 import smparser.models.AttributeUnitRule;

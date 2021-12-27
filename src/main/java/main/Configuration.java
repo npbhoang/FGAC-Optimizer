@@ -2,11 +2,12 @@ package main;
 
 import java.util.List;
 
-import dmparser.models.Association;
-import dmparser.models.Attribute;
-import dmparser.models.DataModel;
-import dmparser.models.Entity;
-import dmparser.models.Pair;
+import org.vgu.dm2schema.dm.Association;
+import org.vgu.dm2schema.dm.Attribute;
+import org.vgu.dm2schema.dm.DataModel;
+import org.vgu.dm2schema.dm.Entity;
+import org.vgu.dm2schema.dm.Pair;
+
 import smparser.models.SecurityModel;
 
 public class Configuration {

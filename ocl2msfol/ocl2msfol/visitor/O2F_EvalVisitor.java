@@ -20,9 +20,10 @@ limitations under the License.
 import java.util.Map;
 import java.util.Set;
 
-import dmparser.models.Association;
-import dmparser.models.DataModel;
-import dmparser.utils.DmUtils;
+import org.vgu.dm2schema.dm.Association;
+import org.vgu.dm2schema.dm.DataModel;
+import org.vgu.dm2schema.dm.DmUtils;
+
 import oclparser.expressions.AssociationClassCallExp;
 import oclparser.expressions.BooleanLiteralExp;
 import oclparser.expressions.Expression;

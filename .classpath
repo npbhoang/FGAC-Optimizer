@@ -24,7 +24,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" path="dmparser"/>
 	<classpathentry kind="src" path="smparser"/>
 	<classpathentry kind="src" path="dm2msfol"/>
 	<classpathentry kind="src" path="oclparser"/>
@@ -39,5 +38,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/datamodel"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

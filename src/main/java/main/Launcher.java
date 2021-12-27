@@ -10,13 +10,13 @@ import java.util.Map;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.vgu.dm2schema.dm.Association;
+import org.vgu.dm2schema.dm.Attribute;
+import org.vgu.dm2schema.dm.DataModel;
+import org.vgu.dm2schema.dm.DmUtils;
+import org.vgu.dm2schema.dm.Entity;
+import org.vgu.dm2schema.dm.Pair;
 
-import dmparser.models.Association;
-import dmparser.models.Attribute;
-import dmparser.models.DataModel;
-import dmparser.models.Entity;
-import dmparser.models.Pair;
-import dmparser.utils.DmUtils;
 import smparser.models.SecurityModel;
 
 public class Launcher {

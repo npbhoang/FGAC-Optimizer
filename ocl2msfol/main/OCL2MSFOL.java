@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import dmparser.models.DataModel;
+import org.vgu.dm2schema.dm.DataModel;
+
 import ocl2msfol.visitor.DefC;
 import ocl2msfol.visitor.LogicValue;
 import ocl2msfol.visitor.O2F_FalseVisitor;
