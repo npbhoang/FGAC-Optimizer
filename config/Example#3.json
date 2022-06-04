@@ -1,0 +1,11 @@
+{
+    "DataModel": "datamodel",
+    "SecurityModel": "Sec#1",
+    "Role": "Lecturer",
+    "Resource": {
+        "Association": "Enrolment"
+    },
+    "Properties": [
+        "Lecturer.allInstances()->forAll(l|l.age<=kcaller.age)"
+    ]
+}

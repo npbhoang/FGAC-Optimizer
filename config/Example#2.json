@@ -1,0 +1,12 @@
+{
+    "DataModel": "datamodel",
+    "SecurityModel": "Sec#2",
+    "Role": "Lecturer",
+    "Invariants": [
+        "Lecturer.allInstances()->forAll(l|Student.allInstances()->forAll(s|l.students->includes(s)))"
+    ],
+    "Resource": {
+        "Entity": "Student",
+        "Attribute": "age"
+    }
+}

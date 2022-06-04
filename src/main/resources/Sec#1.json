@@ -28,7 +28,7 @@
 		],
 		"resources": [
 			{
-				"association": "Enrollment"
+				"association": "Enrolment"
 			}
 		],
 		"auth": [
